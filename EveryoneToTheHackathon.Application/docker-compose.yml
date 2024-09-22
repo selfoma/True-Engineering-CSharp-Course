@@ -1,0 +1,6 @@
+﻿services:
+  hackathon:
+    image: task1-oop
+    build:
+      context: .
+      dockerfile: Dockerfile
