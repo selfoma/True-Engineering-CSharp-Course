@@ -9,6 +9,7 @@ public interface ITeamBuildingStrategy
 
 public class ManagerTeamBuildingStrategy : ITeamBuildingStrategy
 {
+    
     public DreamTeamList MakeDreamTeamList(List<HackathonParticipant> juniorsList, List<HackathonParticipant> teamLeadsList)
     {
         Random rand = new();
@@ -20,7 +21,8 @@ public class ManagerTeamBuildingStrategy : ITeamBuildingStrategy
         {
             dreamTeam.Add(new(juniorsList[i], teamLeadsList[distribution[i]]));
         }
-
+        
         return new (dreamTeam);
     }
+    
 }

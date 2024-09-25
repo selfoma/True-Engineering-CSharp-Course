@@ -23,7 +23,7 @@ class Program
             {
                 services.AddHostedService<HackathonHost>();
                 services.AddTransient<Hackathon>();
-                services.AddTransient<ITeamBuildingStrategy, ManagerTeamBuildingStrategy>();
+                services.AddSingleton<ITeamBuildingStrategy, ManagerTeamBuildingStrategy>();
                 services.AddSingleton<HRManager>();
                 services.AddSingleton<HRDirector>();
             })

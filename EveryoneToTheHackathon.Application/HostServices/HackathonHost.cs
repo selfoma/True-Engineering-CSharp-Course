@@ -3,6 +3,7 @@ using EveryoneToTheHackathon.Options;
 using EveryoneToTheHackathon.Strategy;
 using log4net;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace EveryoneToTheHackathon;
 
@@ -11,28 +12,27 @@ public class HackathonHost : BackgroundService
     private static readonly ILog Logger = LogManager.GetLogger(typeof(HackathonHost));
     
     private readonly IServiceProvider _serviceProvider;
+    private readonly HRDirector _hrDirector;
+    private readonly HRManager _hrManager;
     
-    public HackathonHost(IServiceProvider serviceProvider)
+    public HackathonHost(HRDirector hrDirector, HRManager hrManager, IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
+        _hrDirector = hrDirector;
+        _hrManager = hrManager;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         try
         {
-            var hrDirector = (HRDirector)_serviceProvider.GetService(typeof(HRDirector));
-
             for (int i = 0; i < ConfigOptions.timesToHold; ++i)
             {
-                var hrManager = (HRManager)_serviceProvider.GetService(typeof(HRManager));
-                var hackathon = (Hackathon)_serviceProvider.GetService(typeof(Hackathon));
-
-                hrManager.AskParticipantsWishLists();
-                hrDirector.HoldHackathon(hackathon);
+                var hackathon = (Hackathon)_serviceProvider.GetService<Hackathon>();
+                _hrManager.AskParticipantsWishLists();
+                _hrDirector.HoldHackathon(hackathon);
             }
-            
-            hrDirector.ShowAverageHarmonic();
+            _hrDirector.ShowAverageHarmonic();
         }
         catch (NullReferenceException e)
         {
