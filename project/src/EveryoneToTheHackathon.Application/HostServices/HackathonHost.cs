@@ -28,7 +28,7 @@ public class HackathonHost : BackgroundService
         {
             for (int i = 0; i < ConfigOptions.timesToHold; ++i)
             {
-                var hackathon = (Hackathon)_serviceProvider.GetService<Hackathon>();
+                var hackathon = _serviceProvider.GetService<Hackathon>();
                 _hrManager.AskParticipantsWishLists();
                 _hrDirector.HoldHackathon(hackathon);
             }
