@@ -1,9 +1,16 @@
+using System.Runtime.CompilerServices;
+
 namespace EveryoneToTheHackathon.HackathonParticipants;
 
-
-public class WishList
+public interface IWishList
 {
-    private readonly Dictionary<HackathonParticipant, double> _participantWishList = new();
+    double GetSatisfaction(HackathonParticipant participant);
+}
+
+
+public class WishList : IWishList
+{
+    public Dictionary<HackathonParticipant, double> ParticipantWishList { get; set;  } = new(new HackathonParticipantsComparer());
     
     public WishList(List<HackathonParticipant> candidates)
     {
@@ -13,12 +20,26 @@ public class WishList
         
         for (int i = 0; i < candidates.Count; i++)
         {
-            _participantWishList.Add(candidates[i], distributionList[i]);
+            ParticipantWishList.Add(candidates[i], distributionList[i]);
         }
     }
 
     public double GetSatisfaction(HackathonParticipant participant)
     {
-        return _participantWishList[participant];
+        return ParticipantWishList[participant];
+    }
+}
+
+internal class HackathonParticipantsComparer : IEqualityComparer<HackathonParticipant>
+{
+    public bool Equals(HackathonParticipant? x, HackathonParticipant? y)
+    {
+        if (x is null || y is null) return false;
+        return x.Equals(y);
+    }
+
+    public int GetHashCode(HackathonParticipant obj)
+    {
+        return obj.GetHashCode();
     }
 }

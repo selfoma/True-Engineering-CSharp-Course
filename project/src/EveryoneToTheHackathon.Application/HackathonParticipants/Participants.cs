@@ -1,27 +1,40 @@
+using System.Linq.Expressions;
 using log4net;
 
 namespace EveryoneToTheHackathon.HackathonParticipants;
 
 public class HackathonParticipant
 {
-    private int _participantId;
-    private string _firstName;
-    private string _lastName;
+    public int ParticipantId { get;  }
+    public string Name { get;  }
     
-    public WishList WishList { get; private set; }
+    public virtual IWishList WishList { get; set; }
+
+    public HackathonParticipant() {}
     
-    public HackathonParticipant(int listId, string firstName, string lastName)
+    public HackathonParticipant(int listId, string name)
     {
-        _participantId = listId;
-        _firstName = firstName;
-        _lastName = lastName;
+        ParticipantId = listId;
+        Name = name;
     }
 
     public override string? ToString()
     {
-        return $"#{_participantId}  {_firstName}  {_lastName}";
+        return $"#{ParticipantId}  {Name}";
     }
 
+    public override bool Equals(object? obj)
+    {
+        var participant =  obj as HackathonParticipant;
+        if (participant == null) return false;
+        return ParticipantId.Equals(participant.ParticipantId);
+    }
+
+    public override int GetHashCode()
+    {
+        return ParticipantId.GetHashCode();
+    }
+    
     public void PrepareWishList(List<HackathonParticipant> candidates)
     {
         WishList = new WishList(candidates);

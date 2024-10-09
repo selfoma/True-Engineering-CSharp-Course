@@ -13,13 +13,11 @@ public class HackathonHost : BackgroundService
     
     private readonly IServiceProvider _serviceProvider;
     private readonly HRDirector _hrDirector;
-    private readonly HRManager _hrManager;
     
-    public HackathonHost(HRDirector hrDirector, HRManager hrManager, IServiceProvider serviceProvider)
+    public HackathonHost(HRDirector hrDirector, IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
         _hrDirector = hrDirector;
-        _hrManager = hrManager;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -29,7 +27,6 @@ public class HackathonHost : BackgroundService
             for (int i = 0; i < ConfigOptions.timesToHold; ++i)
             {
                 var hackathon = _serviceProvider.GetService<Hackathon>();
-                _hrManager.AskParticipantsWishLists();
                 _hrDirector.HoldHackathon(hackathon);
             }
             _hrDirector.ShowAverageHarmonic();

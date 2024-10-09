@@ -6,24 +6,17 @@ public class HRDirector
 {
     private static readonly ILog Logger = LogManager.GetLogger(typeof(HRDirector));
 
-    private readonly HRManager _manager;
     private readonly List<Hackathon> _hackathonHistory = new();
-    
-    public HRDirector(HRManager manager)
-    {
-        _manager = manager;
-        Logger.Info("HR director is initialized.");
-    }
     
     public void HoldHackathon(Hackathon hackathon)
     {
-        Logger.Info("HR director is holding a series of hackathons.");
+        Logger.Info("HR director is holding a series of hackathons...");
         
-        hackathon.Hold(_manager);
+        hackathon.Hold();
         Console.WriteLine(hackathon);
         _hackathonHistory.Add(hackathon);
         
-        Logger.Info("All done.");
+        Logger.Info("All done...");
     }
 
     public void ShowAverageHarmonic()

@@ -1,6 +1,7 @@
 using EveryoneToTheHackathon.Options;
 using log4net;
 using EveryoneToTheHackathon.HackathonParticipants;
+using EveryoneToTheHackathon.Strategy;
 
 namespace EveryoneToTheHackathon.HR;
 
@@ -8,30 +9,27 @@ public class HRManager
 {
     private static readonly ILog Logger = LogManager.GetLogger(nameof(HRManager));
 
-    public List<HackathonParticipant> JuniorsList { get; }
-    public List<HackathonParticipant> TeamLeadsList { get; }
+    private readonly ITeamBuildingStrategy _buildingStrategy;
     
-    public HRManager()
+    public HRManager(ITeamBuildingStrategy buildingStrategy)
     {
-        JuniorsList = CSVParticipantsReader.ReadParticipants(ConfigOptions.JuniorsListPath);
-        TeamLeadsList = CSVParticipantsReader.ReadParticipants(ConfigOptions.TeamLeadsListPath);
-        
-        Logger.Info("HR manager formed participants lists.");
+        _buildingStrategy = buildingStrategy;
     }
 
-    public void AskParticipantsWishLists()
+    public void AskParticipantsWishLists(List<HackathonParticipant> participants, List<HackathonParticipant> candidates)
     {
-        LetParticipantsPrepareWishList(JuniorsList, TeamLeadsList);
-        LetParticipantsPrepareWishList(TeamLeadsList, JuniorsList);
+        Logger.Info("Polling participants wish lists...");
         
-        Logger.Info("Participants provided their wish lists.");
-    }
-
-    private void LetParticipantsPrepareWishList(List<HackathonParticipant> participants, List<HackathonParticipant> candidates)
-    {
         foreach (var participant in participants)
         {
             participant.PrepareWishList(candidates);
         }
+    }
+
+    public DreamTeamList BuildDreamTeam(List<HackathonParticipant> juniors, List<HackathonParticipant> teamLeads)
+    {
+        Logger.Info("Building dream team...");
+
+        return _buildingStrategy.MakeDreamTeamList(juniors, teamLeads);
     }
 }

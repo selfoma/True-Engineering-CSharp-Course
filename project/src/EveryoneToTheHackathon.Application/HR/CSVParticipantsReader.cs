@@ -7,12 +7,12 @@ namespace EveryoneToTheHackathon.HR;
 public static class CSVParticipantsReader
 {
     
-    private static readonly ILog _logger = LogManager.GetLogger(typeof(CSVParticipantsReader));
+    private static readonly ILog Logger = LogManager.GetLogger(typeof(CSVParticipantsReader));
     
-    public static List<HackathonParticipant>? ReadParticipants(string filePath)
+    public static List<HackathonParticipant> ReadParticipants(string filePath)
     {
         List<HackathonParticipant> participants = new();
-
+        
         try
         {
             using (var reader = new StreamReader(filePath))
@@ -25,21 +25,18 @@ public static class CSVParticipantsReader
                 while (!reader.EndOfStream)
                 {
                     string[] participantInfo = reader.ReadLine().Split(';');
-                    string[] participantFullName = participantInfo[1].Split(' ');
                     participants.Add(new HackathonParticipant(
-                        Convert.ToInt32(participantInfo[0]),
-                        participantFullName[0],
-                        participantFullName[1])
+                        Convert.ToInt32(participantInfo[0]), participantInfo[1])
                     );
                 }
             }
         }
         catch (Exception e)
         {
-            _logger.Fatal("Parsing CSV failure!");
-            _logger.Fatal(e);
-            _logger.Info("Abort!");
-            Environment.Exit(-150);
+            Logger.Fatal("Parsing CSV failure!");
+            Logger.Fatal(e);
+            Logger.Info("Abort!");
+            Environment.Exit(-2);
         }
 
         return participants;

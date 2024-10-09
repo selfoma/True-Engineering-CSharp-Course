@@ -1,6 +1,6 @@
 namespace EveryoneToTheHackathon.Options;
 
-internal class ConfigOptions
+public class ConfigOptions
 {
     public static string JuniorsListPath { get; set; }
     public static string TeamLeadsListPath { get; set; }
