@@ -11,7 +11,7 @@ public class Hackathon
 
     private ITeamBuildingStrategy _buildingStrategy;
     
-    private readonly HRManager _hrManager;
+    private readonly IHRManager _hrManager;
     
     private List<HackathonParticipant> _juniors;
     private List<HackathonParticipant> _teamLeads;
@@ -19,7 +19,7 @@ public class Hackathon
     
     public double HarmonicMean { get; private set; }
 
-    public Hackathon(HRManager hrManager)
+    public Hackathon(IHRManager hrManager)
     {
         _hrManager = hrManager;
         _juniors = CSVParticipantsReader.ReadParticipants(ConfigOptions.JuniorsListPath);

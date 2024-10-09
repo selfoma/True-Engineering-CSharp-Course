@@ -19,7 +19,7 @@ public class HRDirectorTests : DreamTeamList
 
         wishListMock.Setup(s => s.GetSatisfaction(It.IsAny<HackathonParticipant>())).Returns(10);
         participantMock.Setup(s => s.WishList).Returns(wishListMock.Object);
-        
+            
         var participants = Enumerable.Repeat(participantMock.Object, 3)
             .Select(p => new Tuple<HackathonParticipant, HackathonParticipant>(p, p))
             .ToList();
@@ -42,8 +42,8 @@ public class HRDirectorTests : DreamTeamList
     public async Task When_SpecificSatisfaction_Expect_SpecificHarmonic()
     {
         //Arrange 
-        int expected1 = 3;
-        int expected2 = 5;
+        double expected1 = 3;
+        double expected2 = 5;
         List<double> satisfaction1 = [2, 6];
         List<double> satisfaction2 = [2, 6, 15, 15];
         
@@ -60,7 +60,7 @@ public class HRDirectorTests : DreamTeamList
     public async Task When_SpecificWishListsAndDreamTeam_Expect_SpecificHarmonic()
     {
         //Arrange
-        int[] expectedHarmonics = { 3, 5 };
+        double[] expectedHarmonics = { 3, 5 };
         var dreamTeam1 = DreamTeamFactory([2, 6]);
         var dreamTeam2 = DreamTeamFactory([2, 6, 15, 15]);
             

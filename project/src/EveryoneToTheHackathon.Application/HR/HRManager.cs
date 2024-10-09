@@ -5,7 +5,14 @@ using EveryoneToTheHackathon.Strategy;
 
 namespace EveryoneToTheHackathon.HR;
 
-public class HRManager
+public interface IHRManager
+{
+    void AskParticipantsWishLists(List<HackathonParticipant> participants, List<HackathonParticipant> candidates);
+    
+    DreamTeamList BuildDreamTeam(List<HackathonParticipant> juniors, List<HackathonParticipant> teamLeads);
+}
+
+public class HRManager : IHRManager
 {
     private static readonly ILog Logger = LogManager.GetLogger(nameof(HRManager));
 
