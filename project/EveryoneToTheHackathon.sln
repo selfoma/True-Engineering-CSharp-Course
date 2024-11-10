@@ -11,7 +11,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{9E9D312C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{482B8B03-1312-4E8D-AA91-EDE66146F089}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EveryoneToTheHackathon.Application.UnitTests", "tests\EveryoneToTheHackathon.Application.UnitTests\EveryoneToTheHackathon.Application.UnitTests.csproj", "{F552F9A1-5020-476E-9751-9976043ECCE6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EveryoneToTheHackathon.Infrastructure.UnitTests", "tests\EveryoneToTheHackathon.Infrastructure.UnitTests\EveryoneToTheHackathon.Infrastructure.UnitTests.csproj", "{F552F9A1-5020-476E-9751-9976043ECCE6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EveryoneToTheHackathon.Domain", "src\EveryoneToTheHackathon.Domain\EveryoneToTheHackathon.Domain.csproj", "{8AF82EF4-783F-430E-B2F6-60D956B41C48}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EveryoneToTheHackathon.Infrastructure", "src\EveryoneToTheHackathon.Infrastructure\EveryoneToTheHackathon.Infrastructure.csproj", "{A56A9A77-5DAA-4913-99B9-9AD4898B7CB5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EveryoneToTheHackathon.Domain.UnitTests", "tests\EveryoneToTheHackathon.Domain.UnitTests\EveryoneToTheHackathon.Domain.UnitTests.csproj", "{6309470A-F1F5-44D2-8E3A-051B6BE4D965}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,9 +33,24 @@ Global
 		{F552F9A1-5020-476E-9751-9976043ECCE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F552F9A1-5020-476E-9751-9976043ECCE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F552F9A1-5020-476E-9751-9976043ECCE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8AF82EF4-783F-430E-B2F6-60D956B41C48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AF82EF4-783F-430E-B2F6-60D956B41C48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AF82EF4-783F-430E-B2F6-60D956B41C48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AF82EF4-783F-430E-B2F6-60D956B41C48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A56A9A77-5DAA-4913-99B9-9AD4898B7CB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A56A9A77-5DAA-4913-99B9-9AD4898B7CB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A56A9A77-5DAA-4913-99B9-9AD4898B7CB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A56A9A77-5DAA-4913-99B9-9AD4898B7CB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6309470A-F1F5-44D2-8E3A-051B6BE4D965}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6309470A-F1F5-44D2-8E3A-051B6BE4D965}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6309470A-F1F5-44D2-8E3A-051B6BE4D965}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6309470A-F1F5-44D2-8E3A-051B6BE4D965}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{15D48213-417C-4E14-8CA0-F5FCBDCE366F} = {482B8B03-1312-4E8D-AA91-EDE66146F089}
 		{F552F9A1-5020-476E-9751-9976043ECCE6} = {9E9D312C-2A62-49DF-8A2B-8B2389F6B21C}
+		{8AF82EF4-783F-430E-B2F6-60D956B41C48} = {482B8B03-1312-4E8D-AA91-EDE66146F089}
+		{A56A9A77-5DAA-4913-99B9-9AD4898B7CB5} = {482B8B03-1312-4E8D-AA91-EDE66146F089}
+		{6309470A-F1F5-44D2-8E3A-051B6BE4D965} = {9E9D312C-2A62-49DF-8A2B-8B2389F6B21C}
 	EndGlobalSection
 EndGlobal

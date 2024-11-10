@@ -1,0 +1,18 @@
+﻿services:
+  sql-hackathon-server:
+    container_name: sql-server
+    image: mcr.microsoft.com/mssql/server:latest
+    environment:
+      ACCEPT_EULA: 'Y'
+      SA_PASSWORD: 'foolMe_aaaa123'
+    ports:
+      - "1433:1433"
+#  monolith-app:
+#    image: everyone-to-the-hackathon
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    depends_on:
+#       - sql-hackathon-server
+#    volumes:
+#      - ./logs:/binaries/logs
