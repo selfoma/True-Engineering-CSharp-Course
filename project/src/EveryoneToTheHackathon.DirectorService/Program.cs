@@ -1,9 +1,10 @@
 ﻿using EveryoneToTheHackathon.Domain.Contexts;
 using EveryoneToTheHackathon.Domain.Repositories;
 using EveryoneToTheHackathon.Infrastructure.BackgroundServices;
+using EveryoneToTheHackathon.Infrastructure.BackgroundServices.TaskQueues;
 using EveryoneToTheHackathon.Infrastructure.ServiceOptions;
 using EveryoneToTheHackathon.Infrastructure.Services;
-using EveryoneToTheHackathon.Infrastructure.Strategies;
+using EveryoneToTheHackathon.Infrastructure.TaskQueues.Models;
 using log4net;
 using log4net.Config;
 using log4net.Repository.Hierarchy;
@@ -16,13 +17,12 @@ var configuration = builder.Configuration;
 builder.Services.Configure<ConfigOptions>(configuration);
 var options = builder.Services.BuildServiceProvider().GetRequiredService<IOptions<ConfigOptions>>();
 
-builder.Services.AddHostedService<HostedService>();
+builder.Services.AddHostedService<DirectorHostedService>();
+builder.Services.AddHttpClient();
+builder.Services.AddControllers();
+builder.Services.AddSingleton<IBackgroundTaskQueue<BaseTaskModel>, BackgroundTaskQueue<BaseTaskModel>>();
 builder.Services.AddSingleton<IDirectorService, DirectorService>();
-builder.Services.AddSingleton<IManagerService, ManagerService>();
-builder.Services.AddSingleton<IEmployeeService, EmployeeService>();
 builder.Services.AddSingleton<IHackathonService, HackathonService>();
-builder.Services.AddSingleton<ITeamBuildingStrategy, ManagerTeamBuildingStrategy>();
-builder.Services.AddSingleton<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddSingleton<IHackathonRepository, HackathonRepository>();
 
 builder.Services.AddDbContext<HackathonContext>(o =>

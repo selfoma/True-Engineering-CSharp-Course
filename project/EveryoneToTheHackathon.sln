@@ -1,7 +1,5 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EveryoneToTheHackathon.Application", "src/EveryoneToTheHackathon.Application/EveryoneToTheHackathon.Application.csproj", "{15D48213-417C-4E14-8CA0-F5FCBDCE366F}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FEA370BB-D973-4244-AA05-9D6217F3AB34}"
 	ProjectSection(SolutionItems) = preProject
 		docker-compose.yml = docker-compose.yml
@@ -31,10 +29,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{15D48213-417C-4E14-8CA0-F5FCBDCE366F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{15D48213-417C-4E14-8CA0-F5FCBDCE366F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{15D48213-417C-4E14-8CA0-F5FCBDCE366F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{15D48213-417C-4E14-8CA0-F5FCBDCE366F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F552F9A1-5020-476E-9751-9976043ECCE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F552F9A1-5020-476E-9751-9976043ECCE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F552F9A1-5020-476E-9751-9976043ECCE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -65,7 +59,6 @@ Global
 		{EB03F236-0E5B-42CF-9776-503258E2717B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{15D48213-417C-4E14-8CA0-F5FCBDCE366F} = {482B8B03-1312-4E8D-AA91-EDE66146F089}
 		{F552F9A1-5020-476E-9751-9976043ECCE6} = {9E9D312C-2A62-49DF-8A2B-8B2389F6B21C}
 		{8AF82EF4-783F-430E-B2F6-60D956B41C48} = {482B8B03-1312-4E8D-AA91-EDE66146F089}
 		{A56A9A77-5DAA-4913-99B9-9AD4898B7CB5} = {482B8B03-1312-4E8D-AA91-EDE66146F089}

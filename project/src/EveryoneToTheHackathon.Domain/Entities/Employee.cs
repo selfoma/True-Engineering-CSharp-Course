@@ -7,6 +7,23 @@ public enum EmployeeRole
     None
 }
 
+public static class EmployeeRoleExtensions
+{
+    public static EmployeeRole GetRole(String role)
+    {
+        if (role == "Junior")
+        {
+            return EmployeeRole.Junior;
+        }
+        if (role == "TeamLead")
+        {
+            return EmployeeRole.TeamLead;
+        }
+        return EmployeeRole.None;
+    }
+    
+}
+
 public class Employee
 {
     

@@ -26,7 +26,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\src\EveryoneToTheHackathon.Application\EveryoneToTheHackathon.Application.csproj" />
         <ProjectReference Include="..\..\src\EveryoneToTheHackathon.Infrastructure\EveryoneToTheHackathon.Infrastructure.csproj" />
     </ItemGroup>
 

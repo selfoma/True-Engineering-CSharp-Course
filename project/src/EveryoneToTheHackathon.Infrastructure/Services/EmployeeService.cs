@@ -12,6 +12,8 @@ public interface IEmployeeService
     List<Employee> Juniors { get; }
     List<Employee> TeamLeads { get; } 
     
+    Employee? GetByIdAndRoleCurrentHackathon(int employeeId, EmployeeRole role);
+    
     void HandleParticipantsList(Guid hackathonId);
     void PrepareWishLists();
 }
@@ -23,7 +25,18 @@ public class EmployeeService(IEmployeeRepository repository, IOptions<ConfigOpti
     
     public List<Employee> Juniors { get; set; } = [];
     public List<Employee> TeamLeads { get; set; } = [];
-    
+
+    public Employee? GetByIdAndRoleCurrentHackathon(int employeeId, EmployeeRole role)
+    {
+        var junior = Juniors.FirstOrDefault(e => e.EmployeeId == employeeId && e.Role == role);
+        if (junior is not null) return junior;
+        var teamLead = TeamLeads.FirstOrDefault(e => e.EmployeeId == employeeId && e.Role == role);
+        if (teamLead is not null) return teamLead;
+        Logger.Fatal($"GetByIdAndRoleCurrentHackathon: no employee found [E]: [ID].{ employeeId } - [R].{ role }");
+        Environment.Exit(10);
+        return null;
+    }
+
     public void HandleParticipantsList(Guid hackathonId)
     {
         Juniors = GetParticipants(hackathonId, options.Value.Hackathon!.JuniorsListPath, EmployeeRole.Junior);

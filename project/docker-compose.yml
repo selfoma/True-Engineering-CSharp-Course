@@ -7,12 +7,91 @@
       SA_PASSWORD: 'foolMe_aaaa123'
     ports:
       - "1433:1433"
-#  monolith-app:
-#    image: everyone-to-the-hackathon
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
-#    depends_on:
-#       - sql-hackathon-server
-#    volumes:
-#      - ./logs:/binaries/logs
+  director-service:
+    container_name: hr-director
+    build:
+      context: .
+      dockerfile: src/EveryoneToTheHackathon.DirectorService/Dockerfile
+    volumes:
+      - ./logs:/binaries/logs
+    ports:
+      - "5000:80"
+  manager-service:
+    container_name: hr-manager 
+    build:
+      context: .
+      dockerfile: src/EveryoneToTheHackathon.ManagerService/Dockerfile
+    volumes:
+      - ./logs:/binaries/logs
+    ports:
+      - "5001:80"
+  teamlead-1:
+    build:
+      context: .
+      dockerfile: src/EveryoneToTheHackathon.EmployeeService/Dockerfile
+    environment:
+      - type=TeamLead
+      - id=1
+  teamlead-2:
+    build:
+      context: .
+      dockerfile: src/EveryoneToTheHackathon.EmployeeService/Dockerfile
+    environment:
+      - type=TeamLead
+      - id=2
+  teamlead-3:
+    build:
+      context: .
+      dockerfile: src/EveryoneToTheHackathon.EmployeeService/Dockerfile
+    environment:
+      - type=TeamLead
+      - id=3
+  teamlead-4:
+    build:
+      context: .
+      dockerfile: src/EveryoneToTheHackathon.EmployeeService/Dockerfile
+    environment:
+      - type=TeamLead
+      - id=4
+  teamlead-5:
+    build:
+      context: .
+      dockerfile: src/EveryoneToTheHackathon.EmployeeService/Dockerfile
+    environment:
+      - type=TeamLead
+      - id=5
+  junior-1:
+    build:
+      context: .
+      dockerfile: src/EveryoneToTheHackathon.EmployeeService/Dockerfile
+    environment:
+      - type=Junior
+      - id=1
+  junior-2:
+    build:
+      context: .
+      dockerfile: src/EveryoneToTheHackathon.EmployeeService/Dockerfile
+    environment:
+      - type=Junior
+      - id=2
+  junior-3:
+    build:
+      context: .
+      dockerfile: src/EveryoneToTheHackathon.EmployeeService/Dockerfile
+    environment:
+      - type=Junior
+      - id=3
+  junior-4:
+    build:
+      context: .
+      dockerfile: src/EveryoneToTheHackathon.EmployeeService/Dockerfile
+    environment:
+      - type=Junior
+      - id=4
+  junior-5:
+    build:
+      context: .
+      dockerfile: src/EveryoneToTheHackathon.EmployeeService/Dockerfile
+    environment:
+      - type=Junior
+      - id=5

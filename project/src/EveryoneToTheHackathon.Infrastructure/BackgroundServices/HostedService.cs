@@ -15,7 +15,7 @@ public class HostedService(
     
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        for (int i = 0; i < options.Value.Hackathon.TimesToHold; i++)
+        for (int i = 0; i < options.Value.Hackathon!.TimesToHold; i++)
         {
             var hackathon = directorService.StartHackathon();
             employeeService.HandleParticipantsList(hackathon.HackathonId);

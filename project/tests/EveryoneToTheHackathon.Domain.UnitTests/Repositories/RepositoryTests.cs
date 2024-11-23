@@ -10,7 +10,7 @@ namespace EveryoneToTheHackathon.Domain.UnitTests.Repositories;
 public class RepositoryTests
 {
     
-    private static HackathonContext CreateInMemoryContext()
+    private static HackathonContext CreateInMemoryDbContext()
     {
         var options = CreateInMemoryDbContextOptions();
         var context = new HackathonContext(options);
@@ -31,7 +31,7 @@ public class RepositoryTests
     [Fact]
     public void AddHackathonInfo_ShouldSucceed()
     {
-        using var context = CreateInMemoryContext();
+        using var context = CreateInMemoryDbContext();
         {
             
             // Make test data
@@ -193,7 +193,7 @@ public class RepositoryTests
             // Employees cascade adding mappings and wishlists
             var employees = juniors.Union(teamLeads).ToList();
             employeeRepository.AddRange(employees);
-            var employeeIntersection = context.Employees
+            var employeeIntersection = employees
                 .ToList().Intersect(context.Employees.ToList(), new EmployeeComparer());
             Assert.Equal(employees.Count, employeeIntersection.Count());
             
@@ -221,7 +221,7 @@ public class RepositoryTests
     [Fact]
     public void GetOverallResult_ShouldReturnSpecificValue()
     {
-        using var context = CreateInMemoryContext();
+        using var context = CreateInMemoryDbContext();
         {
             var hackathon1 = new Hackathon { HarmonicMean = 10 };
             var hackathon2 = new Hackathon { HarmonicMean = 10 };
