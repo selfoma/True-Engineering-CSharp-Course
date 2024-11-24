@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace EveryoneToTheHackathon.EmployeeService.Controllers;
 
 [ApiController]
-[Route("/api/employee")]
+[Route("/api")]
 public class EmployeeController(
     IBackgroundTaskQueue<BaseTaskModel> backgroundTaskQueue,
     IEmployeeService employeeService) : ControllerBase
@@ -18,12 +18,13 @@ public class EmployeeController(
     {
         if (hackathonInfo is null)
         {
-            return BadRequest("Invalid hackathon information.");
+            return BadRequest("Hackathon is null!");
         }
         employeeService.HandleParticipantsList(hackathonInfo.HackathonId);
         employeeService.PrepareWishLists();
-        backgroundTaskQueue.EnqueueAsync(new BaseTaskModel("Send data to manager."));
-        return Ok("Wishlists done!");
+        backgroundTaskQueue.EnqueueAsync(
+            new("Send wish lists to manager: [Assignee].EmployeeHostedService"));
+        return Ok();
     }
     
 }

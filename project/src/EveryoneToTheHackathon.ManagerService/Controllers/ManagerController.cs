@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace EveryoneToTheHackathon.ManagerService.Controllers;
 
 [ApiController]
-[Route("/api/manager-service")]
+[Route("/api")]
 public class ManagerController(
     IBackgroundTaskQueue<BaseTaskModel> backgroundTaskQueue,
     IManagerService managerService) : ControllerBase
@@ -15,16 +15,20 @@ public class ManagerController(
 
     private readonly List<Employee> _employeesList = new();
 
-    [HttpPost("collect-employees")]
-    public IActionResult s([FromBody] Employee employee)
+    [HttpPost("employee")]
+    public IActionResult HandleEmployeeRequest([FromBody] Employee? employee)
     {
+        if (employee is null)
+        {
+            return BadRequest("Employee is null.");
+        }
         _employeesList.Add(employee);
-        if (_employeesList.Count == 10)
+        if (_employeesList.Count != 10)
         {
             managerService.AddAndSplitEmployees(_employeesList);
-            backgroundTaskQueue.EnqueueAsync(new BaseTaskModel("Build teams."));
+            backgroundTaskQueue.EnqueueAsync(new("Build teams: [Assignee].ManagerService"));
         }
-        return Ok("Got it");
+        return Ok($"Got it: [E].{employee.EmployeeId} - [ROLE].{employee.Role}.");
     }
     
 }

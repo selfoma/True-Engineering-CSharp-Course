@@ -2,6 +2,7 @@
 using EveryoneToTheHackathon.Domain.Repositories;
 using EveryoneToTheHackathon.Infrastructure.BackgroundServices;
 using EveryoneToTheHackathon.Infrastructure.BackgroundServices.TaskQueues;
+using EveryoneToTheHackathon.Infrastructure.BackgroundServices.TaskQueues.Models;
 using EveryoneToTheHackathon.Infrastructure.ServiceOptions;
 using EveryoneToTheHackathon.Infrastructure.Services;
 using EveryoneToTheHackathon.Infrastructure.TaskQueues.Models;

@@ -3,12 +3,15 @@ using EveryoneToTheHackathon.Domain.Entities;
 using EveryoneToTheHackathon.Infrastructure.BackgroundServices.TaskQueues;
 using EveryoneToTheHackathon.Infrastructure.Services;
 using EveryoneToTheHackathon.Infrastructure.BackgroundServices.TaskQueues.Models;
+using EveryoneToTheHackathon.Infrastructure.ServiceOptions;
 using log4net;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 
 namespace EveryoneToTheHackathon.Infrastructure.BackgroundServices;
 
 public class EmployeeHostedService(
+    IOptions<ConfigOptions> options,
     IBackgroundTaskQueue<BaseTaskModel> backgroundTaskQueue,
     IHttpClientFactory httpClientFactory,
     IEmployeeService employeeService) : BackgroundService
@@ -26,9 +29,9 @@ public class EmployeeHostedService(
             var employee = employeeService.GetByIdAndRoleCurrentHackathon(id, type);
             PostEmployeeManagerService(employee!);
         }
-        catch (OperationCanceledException e)
+        catch (Exception e)
         {
-            Logger.Fatal("ExecuteAsync: background task failed!");
+            Logger.Fatal("ExecuteAsync: Background task failed!");
             Logger.Fatal("Exception: ", e);
             Environment.Exit(15);
         } 
@@ -37,9 +40,9 @@ public class EmployeeHostedService(
 
     private void PostEmployeeManagerService(Employee employee)
     {
-        var client = httpClientFactory.CreateClient();
-        var url = "https://manager-service/api/manager/collect-participants";
-        client.PostAsJsonAsync(url, employee);
+        httpClientFactory
+            .CreateClient()
+            .PostAsJsonAsync(options.Value.Services!.BaseUrlOptions!.ManagerUrl + "api/employee", employee);
     }
     
 }

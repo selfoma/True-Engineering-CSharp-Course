@@ -4,6 +4,7 @@ using EveryoneToTheHackathon.Infrastructure.BackgroundServices.TaskQueues;
 using EveryoneToTheHackathon.Infrastructure.ServiceOptions;
 using EveryoneToTheHackathon.Infrastructure.Services;
 using EveryoneToTheHackathon.Infrastructure.BackgroundServices.TaskQueues.Models;
+using log4net;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 
@@ -16,52 +17,46 @@ public class DirectorHostedService(
     IDirectorService directorService) : BackgroundService
 {
     
-    protected override Task ExecuteAsync(CancellationToken stoppingToken)
+    private static readonly ILog Logger = LogManager.GetLogger(typeof(DirectorHostedService));
+    
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        var client = httpClientFactory.CreateClient();
-
         var hackathon = directorService.StartHackathon();
-        NotifyEmployeeHackathonStarted(hackathon, client);
+        NotifyEmployeeHackathonStarted(hackathon, stoppingToken);
 
-        while (true)
-        {
-            
-        }
+        await backgroundTaskQueue.DequeueAsync(stoppingToken);
+        directorService.ShowOverallResult();
         
-        return Task.CompletedTask;
+        await Task.CompletedTask;
     }
 
-    private async void NotifyEmployeeHackathonStarted(Hackathon hackathon, HttpClient client)
+    private async void NotifyEmployeeHackathonStarted(Hackathon hackathon, CancellationToken stoppingToken)
     {
-        var servicesUrl = new List<string>
-        {
-            "https://teamlead-1/api/employee/notify",
-            "https://teamlead-2/api/employee/notify",
-            "https://teamlead-3/api/employee/notify",
-            "https://teamlead-4/api/employee/notify",
-            "https://teamlead-5/api/employee/notify",
-            "https://junior-1/api/employee/notify",
-            "https://junior-2/api/employee/notify",
-            "https://junior-3/api/employee/notify",
-            "https://junior-4/api/employee/notify",
-            "https://junior-5/api/employee/notify",
-        };
-
-        var tasks = servicesUrl.Select(async url =>
-        {
-            try
-            {
-                var response = await client.PostAsJsonAsync(url, new { HackathonId = hackathon.HackathonId });
-                if (!response.IsSuccessStatusCode)
+        var tasks = options
+            .Value
+            .Services
+            !.BaseUrlOptions
+            !.EmployeeUrls
+            .Select(async url => { 
+                try 
                 {
-                    // TODO: HANDLE IT
-                } 
-            }
-            catch (Exception e)
-            {
-                // TODO: HANDLE IT
-            }
-        });
+                    var response = await httpClientFactory
+                        .CreateClient()
+                        .PostAsJsonAsync(url + "api/notify", new { hackathon.HackathonId }, stoppingToken);
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        Logger.Fatal("NotifyEmployeeHackathonStarted: Got bad response.");
+                        Logger.Fatal($"Response: { await response.Content.ReadAsStringAsync(stoppingToken) }");
+                        Environment.Exit(15);
+                    } 
+                }
+                catch (Exception e)
+                {
+                    Logger.Fatal("NotifyEmployeeHackathonStarted: Exception thrown");
+                    Logger.Fatal("Exception:", e);
+                    Environment.Exit(15);
+                }
+            });
         await Task.WhenAll(tasks);
     }
 
