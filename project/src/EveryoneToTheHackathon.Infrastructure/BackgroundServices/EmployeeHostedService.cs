@@ -24,9 +24,7 @@ public class EmployeeHostedService(
         try
         {
             await backgroundTaskQueue.DequeueAsync(stoppingToken);
-            var type = EmployeeRoleExtensions.GetRole(Environment.GetEnvironmentVariable("type"));
-            var id = Convert.ToInt32(Environment.GetEnvironmentVariable("id"));
-            var employee = employeeService.GetByIdAndRoleCurrentHackathon(id, type);
+            var employee = employeeService.GetThisEmployee();
             PostEmployeeManagerService(employee!);
         }
         catch (Exception e)

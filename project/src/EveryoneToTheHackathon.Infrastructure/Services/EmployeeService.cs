@@ -2,67 +2,88 @@ using EveryoneToTheHackathon.Domain.Entities;
 using EveryoneToTheHackathon.Domain.Repositories;
 using EveryoneToTheHackathon.Infrastructure.ServiceOptions;
 using log4net;
-using log4net.Repository.Hierarchy;
 using Microsoft.Extensions.Options;
 
 namespace EveryoneToTheHackathon.Infrastructure.Services;
 
 public interface IEmployeeService
 {
-    List<Employee> Juniors { get; }
-    List<Employee> TeamLeads { get; } 
+    List<Employee> Colleagues { get; }
     
-    Employee? GetByIdAndRoleCurrentHackathon(int employeeId, EmployeeRole role);
+    Employee? GetThisEmployee();
     
     void HandleParticipantsList(Guid hackathonId);
     void PrepareWishLists();
 }
 
-public class EmployeeService(IEmployeeRepository repository, IOptions<ConfigOptions> options) : IEmployeeService
+public class EmployeeService : IEmployeeService
 {
     
     private static readonly ILog Logger = LogManager.GetLogger(typeof(EmployeeService));
-    
-    public List<Employee> Juniors { get; set; } = [];
-    public List<Employee> TeamLeads { get; set; } = [];
 
-    public Employee? GetByIdAndRoleCurrentHackathon(int employeeId, EmployeeRole role)
+    private readonly IEmployeeRepository _repository;
+    private readonly IOptions<ConfigOptions> _options;
+
+    private readonly Employee _currentEmployee;
+    
+    public List<Employee> Colleagues { get; set; } = [];
+
+    public EmployeeService(IEmployeeRepository repository, IOptions<ConfigOptions> options)
     {
-        var junior = Juniors.FirstOrDefault(e => e.EmployeeId == employeeId && e.Role == role);
-        if (junior is not null) return junior;
-        var teamLead = TeamLeads.FirstOrDefault(e => e.EmployeeId == employeeId && e.Role == role);
-        if (teamLead is not null) return teamLead;
-        Logger.Fatal($"GetByIdAndRoleCurrentHackathon: no employee found [E]: [ID].{ employeeId } - [R].{ role }");
-        Environment.Exit(10);
-        return null;
+        _repository = repository;
+        _options = options;
+        var role = EmployeeRoleExtensions.GetRole(Environment.GetEnvironmentVariable("role"));
+        var id = Convert.ToInt32(Environment.GetEnvironmentVariable("id"));
+        if (role is EmployeeRole.Junior)
+        {
+            _currentEmployee = CsvParticipantsReader.ReadParticipant(id, role, _options.Value.Hackathon!.JuniorsListPath);
+        }
+        else if (role is EmployeeRole.TeamLead)
+        {
+            _currentEmployee = CsvParticipantsReader.ReadParticipant(id, role, _options.Value.Hackathon!.TeamLeadsListPath);
+        }
+        else
+        {
+            Logger.Fatal($"Service constructor: [ROLE].{ role } invalid!");
+            Environment.Exit(5);
+        }
+    }
+    
+    public Employee? GetThisEmployee()
+    {
+        return _currentEmployee;
     }
 
     public void HandleParticipantsList(Guid hackathonId)
     {
-        Juniors = GetParticipants(hackathonId, options.Value.Hackathon!.JuniorsListPath, EmployeeRole.Junior);
-        TeamLeads = GetParticipants(hackathonId, options.Value.Hackathon!.TeamLeadsListPath, EmployeeRole.TeamLead);
+        _currentEmployee.HackathonEmployeeWishListMappings.Add(new HackathonEmployeeWishListMapping
+        {
+            HackathonId = hackathonId,
+            EmployeeId = _currentEmployee.EmployeeId,
+            EmployeeRole = _currentEmployee.Role,
+        });
+        if (_currentEmployee.Role is EmployeeRole.Junior)
+        {
+            Colleagues = GetParticipants(hackathonId, _options.Value.Hackathon!.TeamLeadsListPath, EmployeeRole.TeamLead);
+        }
+        else
+        {
+            Colleagues = GetParticipants(hackathonId, _options.Value.Hackathon!.JuniorsListPath, EmployeeRole.Junior);
+        }
     }
     
     public void PrepareWishLists()
     {
-        Juniors.ForEach(j =>
-        {
-            var mapping = j.HackathonEmployeeWishListMappings.Last();
-            mapping.WishLists = GetWishLists(mapping.MappingId, TeamLeads);
-        });
-        TeamLeads.ForEach(tl =>
-        {
-            var mapping = tl.HackathonEmployeeWishListMappings.Last();
-            mapping.WishLists = GetWishLists(mapping.MappingId, Juniors);
-        });
-        SaveEmployees();
+        var mapping = _currentEmployee.HackathonEmployeeWishListMappings.Last();
+        mapping.WishLists = GetWishLists(mapping.MappingId, Colleagues);
+        SaveEmployee();
     }
 
     private List<Employee> GetParticipants(Guid hackathonId, string path, EmployeeRole role)
     {
         return CsvParticipantsReader.ReadParticipants(hackathonId, path, role);
     }
-
+    
     private static List<WishList> GetWishLists(Guid mappingId, List<Employee> colleagues)
     {
         var wishLists = new List<WishList>();
@@ -80,16 +101,15 @@ public class EmployeeService(IEmployeeRepository repository, IOptions<ConfigOpti
         return wishLists;
     }
 
-    private void SaveEmployees()
+    private void SaveEmployee()
     {
-        var list = Juniors.Union(TeamLeads).ToList();
-        repository.AddRange(list);
+        _repository.Add(_currentEmployee);
     }
     
     public static class CsvParticipantsReader
     {
     
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(CsvParticipantsReader));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(CsvParticipantsReader));
     
         public static List<Employee> ReadParticipants(Guid hackathonId, string filePath, EmployeeRole role)
         {
@@ -126,12 +146,51 @@ public class EmployeeService(IEmployeeRepository repository, IOptions<ConfigOpti
             }
             catch (Exception e)
             {
-                Logger.Fatal($"CsvReader: File path: {filePath}");
-                Logger.Fatal("CsvReader: Exception: ", e);
+                Log.Fatal($"CsvReader[ReadParticipants]: File path: { filePath }.");
+                Log.Fatal("Exception: ", e);
                 Environment.Exit(10);
             }
             return participants;
         }
+        
+        public static Employee ReadParticipant(int employeeId, EmployeeRole role, string filePath)
+        {
+            try
+            {
+                using var reader = new StreamReader(filePath);
+                {
+                    if (!reader.EndOfStream)
+                    {
+                        reader.ReadLine();
+                    }
+                    while (!reader.EndOfStream)
+                    {
+                        var participantInfo = reader.ReadLine()!.Split(';');
+                        var id = int.Parse(participantInfo[0]);
+                        if (id == employeeId)
+                        {
+                            return new Employee
+                            {
+                                EmployeeId = id, 
+                                Role = role, 
+                                FullName = participantInfo[1]
+                            };
+                        }
+                    }
+                    Log.Fatal($"CsvReader:[ReadParticipant] File path: { filePath }.");
+                    Log.Fatal($"Employee: [ID].{ employeeId } - [ROLE].{ role } not found.");
+                    Environment.Exit(10);
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Fatal($"CsvReader:[ReadParticipant] File path: { filePath }.");
+                Log.Fatal("Exception: ", e);
+                Environment.Exit(10);
+            }
+            return new();
+        }
+        
     }
     
 }

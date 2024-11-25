@@ -14,8 +14,6 @@
       dockerfile: src/EveryoneToTheHackathon.DirectorService/Dockerfile
     volumes:
       - ./logs:/binaries/logs
-    ports:
-      - "5000:80"
   manager-service:
     container_name: hr-manager 
     build:
@@ -23,75 +21,73 @@
       dockerfile: src/EveryoneToTheHackathon.ManagerService/Dockerfile
     volumes:
       - ./logs:/binaries/logs
-    ports:
-      - "5001:80"
   teamlead-1:
     build:
       context: .
       dockerfile: src/EveryoneToTheHackathon.EmployeeService/Dockerfile
     environment:
-      - type=TeamLead
+      - role=TeamLead
       - id=1
   teamlead-2:
     build:
       context: .
       dockerfile: src/EveryoneToTheHackathon.EmployeeService/Dockerfile
     environment:
-      - type=TeamLead
+      - role=TeamLead
       - id=2
   teamlead-3:
     build:
       context: .
       dockerfile: src/EveryoneToTheHackathon.EmployeeService/Dockerfile
     environment:
-      - type=TeamLead
+      - role=TeamLead
       - id=3
   teamlead-4:
     build:
       context: .
       dockerfile: src/EveryoneToTheHackathon.EmployeeService/Dockerfile
     environment:
-      - type=TeamLead
+      - role=TeamLead
       - id=4
   teamlead-5:
     build:
       context: .
       dockerfile: src/EveryoneToTheHackathon.EmployeeService/Dockerfile
     environment:
-      - type=TeamLead
+      - role=TeamLead
       - id=5
   junior-1:
     build:
       context: .
       dockerfile: src/EveryoneToTheHackathon.EmployeeService/Dockerfile
     environment:
-      - type=Junior
+      - role=Junior
       - id=1
   junior-2:
     build:
       context: .
       dockerfile: src/EveryoneToTheHackathon.EmployeeService/Dockerfile
     environment:
-      - type=Junior
+      - role=Junior
       - id=2
   junior-3:
     build:
       context: .
       dockerfile: src/EveryoneToTheHackathon.EmployeeService/Dockerfile
     environment:
-      - type=Junior
+      - role=Junior
       - id=3
   junior-4:
     build:
       context: .
       dockerfile: src/EveryoneToTheHackathon.EmployeeService/Dockerfile
     environment:
-      - type=Junior
+      - role=Junior
       - id=4
   junior-5:
     build:
       context: .
       dockerfile: src/EveryoneToTheHackathon.EmployeeService/Dockerfile
     environment:
-      - type=Junior
+      - role=Junior
       - id=5
