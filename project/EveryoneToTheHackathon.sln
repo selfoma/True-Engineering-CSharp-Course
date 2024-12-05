@@ -2,7 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FEA370BB-D973-4244-AA05-9D6217F3AB34}"
 	ProjectSection(SolutionItems) = preProject
-		docker-compose.yml = docker-compose.yml
+		docker-compose-deploy.yml = docker-compose-deploy.yml
+		docker-compose-build.yml = docker-compose-build.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{9E9D312C-2A62-49DF-8A2B-8B2389F6B21C}"

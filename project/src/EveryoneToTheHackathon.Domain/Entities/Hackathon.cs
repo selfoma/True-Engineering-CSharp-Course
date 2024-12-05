@@ -2,7 +2,6 @@ namespace EveryoneToTheHackathon.Domain.Entities;
 
 public class Hackathon
 {
-    
     public Guid HackathonId { get; init; } = Guid.NewGuid();
     
     public decimal HarmonicMean { get; set; }
@@ -15,5 +14,4 @@ public class Hackathon
     {
         return $"Harmonic: { HarmonicMean } ";
     }
-    
 }

@@ -1,30 +1,33 @@
-using EveryoneToTheHackathon.EmployeeService.Controllers.Models;
 using EveryoneToTheHackathon.Infrastructure.BackgroundServices.TaskQueues;
 using EveryoneToTheHackathon.Infrastructure.Services;
 using EveryoneToTheHackathon.Infrastructure.BackgroundServices.TaskQueues.Models;
+using EveryoneToTheHackathon.Infrastructure.Dtos;
+using log4net;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EveryoneToTheHackathon.EmployeeService.Controllers;
 
 [ApiController]
-[Route("/api")]
+[Route("api")]
 public class EmployeeController(
     IBackgroundTaskQueue<BaseTaskModel> backgroundTaskQueue,
     IEmployeeService employeeService) : ControllerBase
 {
+    private static readonly ILog Logger = LogManager.GetLogger(typeof(EmployeeController));
     
     [HttpPost("notify")]
-    public IActionResult HandleDirectorServiceRequest([FromBody] HackathonInfo? hackathonInfo)
+    public IActionResult HandleDirectorServiceRequest([FromBody] NotifyRequestDto? notifyRequestDto)
     {
-        if (hackathonInfo is null)
+        if (notifyRequestDto is null)
         {
-            return BadRequest("Hackathon is null!");
+            Logger.Warn("NotifyRequestDto is null!");
+            return BadRequest("Request is null!");
         }
-        employeeService.HandleParticipantsList(hackathonInfo.HackathonId);
+        Logger.Info($"HackathonInfo: [ID].{ notifyRequestDto.HackathonId }.");
+        employeeService.HandleParticipantsList(notifyRequestDto.HackathonId);
         employeeService.PrepareWishLists();
         backgroundTaskQueue.EnqueueAsync(
-            new("Send wish lists to manager: [Assignee].EmployeeHostedService"));
-        return Ok();
+            new("Send wish lists to manager: [Assignee].EmployeeHostedService."));
+        return Ok("Got it.");
     }
-    
 }

@@ -1,44 +1,45 @@
 using EveryoneToTheHackathon.Domain.Entities;
+using EveryoneToTheHackathon.Infrastructure.Dtos;
 using EveryoneToTheHackathon.Infrastructure.Strategies;
+using log4net;
 
 namespace EveryoneToTheHackathon.Infrastructure.Services;
 
 public interface IManagerService
 {
-    List<HackathonDreamTeam> ManageTeams();
-    void AddAndSplitEmployees(List<Employee> employees);
+    List<DreamTeamDto> ManageTeams();
+    void SplitResponses(List<EmployeeResponseDto> responses);
 }
 
 public class ManagerService(ITeamBuildingStrategy strategy) : IManagerService
 {
-
-    private readonly List<Employee> _juniors = new();
-    private readonly List<Employee> _teamLeads = new();
+    private static readonly ILog Logger = LogManager.GetLogger(typeof(ManagerService));
     
-    public List<HackathonDreamTeam> ManageTeams()
-    { 
-        return strategy.BuildTeams(_juniors, _teamLeads);
+    private readonly List<EmployeeResponseDto> _juniorsDto = new();
+    private readonly List<EmployeeResponseDto> _teamLeadsDto = new();
+    
+    public List<DreamTeamDto> ManageTeams()
+    {
+        return strategy.BuildTeams(_juniorsDto, _teamLeadsDto);
     }
 
-    public void AddAndSplitEmployees(List<Employee> employees)
+    public void SplitResponses(List<EmployeeResponseDto> responses)
     {
-        _juniors.Clear();
-        _teamLeads.Clear();
+        _juniorsDto.Clear();
+        _teamLeadsDto.Clear();
         
-        _juniors.AddRange
-        (
-            employees
-            .Select(e => e)
-            .Where(e => e.Role == EmployeeRole.Junior)
+        _juniorsDto.AddRange(responses
+            .Select(r => r)
+            .Where(r => r.Role == EmployeeRole.Junior)
             .ToList()
         );
-        _teamLeads.AddRange
-        (
-            employees
-                .Select(e => e)
-                .Where(e => e.Role == EmployeeRole.TeamLead)
-                .ToList()
+        
+        _teamLeadsDto.AddRange(responses
+            .Select(r => r)
+            .Where(r => r.Role == EmployeeRole.TeamLead)
+            .ToList()
         );
+        
+        Logger.Info($"SplitResponses: [JC].{ _juniorsDto.Count } - [TLC].{ _teamLeadsDto.Count }");
     }
-    
 }

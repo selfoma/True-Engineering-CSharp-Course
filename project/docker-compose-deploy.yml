@@ -1,0 +1,176 @@
+﻿services:
+  
+  sql-hackathon-server:
+    container_name: sql-server
+    image: mcr.microsoft.com/mssql/server:latest
+    environment:
+      ACCEPT_EULA: 'Y'
+      SA_PASSWORD: 'foolMe_aaaa123'
+    ports:
+      - "1433:1433"
+  
+  manager:
+    container_name: manager
+    image: manager-service
+    volumes:
+      - ./logs:/binaries/logs
+    ports:
+      - "9000:8080"
+  
+  teamlead-1:
+    image: employee-service
+    environment:
+      - role=TeamLead
+      - id=1
+    ports: 
+      - "9001:8080"
+    depends_on:
+      - manager
+      - sql-hackathon-server
+    volumes:
+      - ./logs:/binaries/logs
+    
+  teamlead-2:
+    image: employee-service
+    environment:
+      - role=TeamLead
+      - id=2
+    ports:
+      - "9002:8080"
+    depends_on:
+      - manager
+      - sql-hackathon-server
+    volumes:
+      - ./logs:/binaries/logs
+      
+  teamlead-3:
+    container_name: teamlead-3
+    image: employee-service
+    environment:
+      - role=TeamLead
+      - id=3
+    ports:
+      - "9003:8080"
+    depends_on:
+      - manager
+      - sql-hackathon-server
+    volumes:
+      - ./logs:/binaries/logs
+    
+  teamlead-4:
+    container_name: teamlead-4
+    image: employee-service
+    environment:
+      - role=TeamLead
+      - id=4
+    ports:
+      - "9004:8080"
+    depends_on:
+      - manager
+      - sql-hackathon-server
+    volumes:
+      - ./logs:/binaries/logs
+    
+  teamlead-5:
+    container_name: teamlead-5
+    image: employee-service
+    environment:
+      - role=TeamLead
+      - id=5
+    ports:
+      - "9005:8080"
+    depends_on:
+      - manager
+      - sql-hackathon-server
+    volumes:
+      - ./logs:/binaries/logs
+    
+  junior-1:
+    container_name: junior-1
+    image: employee-service
+    environment:
+      - role=Junior
+      - id=1
+    ports:
+      - "9011:8080"
+    depends_on:
+      - manager
+      - sql-hackathon-server
+    volumes:
+      - ./logs:/binaries/logs
+    
+  junior-2:
+    container_name: junior-2
+    image: employee-service
+    environment:
+      - role=Junior
+      - id=2
+    ports:
+      - "9012:8080"
+    depends_on:
+      - manager
+      - sql-hackathon-server
+    volumes:
+      - ./logs:/binaries/logs
+
+  junior-3:
+    container_name: junior-3
+    image: employee-service
+    environment:
+      - role=Junior
+      - id=3
+    ports:
+      - "9013:8080"
+    depends_on:
+      - manager
+      - sql-hackathon-server
+    volumes:
+      - ./logs:/binaries/logs
+
+  junior-4:
+    container_name: junior-4
+    image: employee-service
+    environment:
+      - role=Junior
+      - id=4
+    ports:
+      - "9014:8080"
+    depends_on:
+      - manager
+      - sql-hackathon-server
+    volumes:
+      - ./logs:/binaries/logs
+
+  junior-5:
+    container_name: junior-5
+    image: employee-service
+    environment:
+      - role=Junior
+      - id=5
+    ports:
+      - "9015:8080"
+    depends_on:
+      - manager
+      - sql-hackathon-server
+    volumes:
+      - ./logs:/binaries/logs
+
+  director:
+    container_name: director
+    image: director-service
+    volumes:
+      - ./logs:/binaries/logs
+    ports:
+      - "9020:8080"
+    depends_on:
+      - teamlead-1
+      - teamlead-2
+      - teamlead-3
+      - teamlead-4
+      - teamlead-5
+      - junior-1
+      - junior-2
+      - junior-3
+      - junior-4
+      - junior-5
+    

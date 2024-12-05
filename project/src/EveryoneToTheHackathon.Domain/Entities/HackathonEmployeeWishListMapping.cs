@@ -2,7 +2,6 @@ namespace EveryoneToTheHackathon.Domain.Entities;
 
 public class HackathonEmployeeWishListMapping
 {
-    
     public Guid MappingId { get; init; } = Guid.NewGuid();
     
     public Guid HackathonId { get; init; } = Guid.Empty;
@@ -18,5 +17,4 @@ public class HackathonEmployeeWishListMapping
     {
         return $"Employee: { Employee }, HackathonId: { HackathonId }";
     }
-    
 }

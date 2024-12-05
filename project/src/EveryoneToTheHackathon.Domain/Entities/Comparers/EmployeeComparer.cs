@@ -2,7 +2,6 @@ namespace EveryoneToTheHackathon.Domain.Entities.Comparers;
 
 public class EmployeeComparer : IEqualityComparer<Employee>
 {
-    
     public bool Equals(Employee? x, Employee? y)
     {
         if (x is null || y is null) return false;
@@ -13,5 +12,4 @@ public class EmployeeComparer : IEqualityComparer<Employee>
     {
         return e is null ? 0 : HashCode.Combine(e.EmployeeId, e.Role);
     }
-    
 }

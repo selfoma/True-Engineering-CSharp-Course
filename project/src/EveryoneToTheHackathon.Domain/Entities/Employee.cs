@@ -9,7 +9,7 @@ public enum EmployeeRole
 
 public static class EmployeeRoleExtensions
 {
-    public static EmployeeRole GetRole(String role)
+    public static EmployeeRole GetRole(string? role)
     {
         if (role == "Junior")
         {
@@ -26,7 +26,6 @@ public static class EmployeeRoleExtensions
 
 public class Employee
 {
-    
     public int EmployeeId { get; init; }
     
     public string FullName { get; set; } = string.Empty;
@@ -41,5 +40,4 @@ public class Employee
     {
         return $"{ EmployeeId }. { FullName } - { Role } ";
     }
-    
 }

@@ -21,7 +21,6 @@ public interface IHackathonRepository
 
 public class HackathonRepository(HackathonContext context) : IHackathonRepository
 {
-    
     private static readonly ILog Logger = LogManager.GetLogger(typeof(HackathonRepository));
 
     public void Add(Hackathon hackathon)
@@ -52,6 +51,9 @@ public class HackathonRepository(HackathonContext context) : IHackathonRepositor
         var hackathon = context
             .Hackathons
             .Include(h => h.HackathonDreamTeams)
+            .ThenInclude(dt => dt.Junior)
+            .Include(h => h.HackathonDreamTeams)
+            .ThenInclude(dt => dt.TeamLead)
             .FirstOrDefault(h => h.HackathonId == hackathonId);
         if (hackathon is not null) return hackathon;
         Logger.Fatal($"GetHackathonById: Hackathon with [ID]={ hackathonId } does not exist.");
@@ -145,5 +147,4 @@ public class HackathonRepository(HackathonContext context) : IHackathonRepositor
                 .Where(w => w.MappingId == mappingId)
             .ToList();
     }
-    
 }

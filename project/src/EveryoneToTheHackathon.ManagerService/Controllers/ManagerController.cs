@@ -1,34 +1,39 @@
-using EveryoneToTheHackathon.Domain.Entities;
 using EveryoneToTheHackathon.Infrastructure.BackgroundServices.TaskQueues;
 using EveryoneToTheHackathon.Infrastructure.BackgroundServices.TaskQueues.Models;
+using EveryoneToTheHackathon.Infrastructure.Dtos;
 using EveryoneToTheHackathon.Infrastructure.Services;
+using log4net;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EveryoneToTheHackathon.ManagerService.Controllers;
 
 [ApiController]
-[Route("/api")]
+[Route("api")]
 public class ManagerController(
     IBackgroundTaskQueue<BaseTaskModel> backgroundTaskQueue,
     IManagerService managerService) : ControllerBase
 {
+    
+    private static readonly ILog Logger = LogManager.GetLogger(typeof(ManagerController));
 
-    private readonly List<Employee> _employeesList = new();
+    private static readonly List<EmployeeResponseDto> EmployeeResponses = new();
 
     [HttpPost("employee")]
-    public IActionResult HandleEmployeeRequest([FromBody] Employee? employee)
+    public IActionResult HandleEmployeeRequest([FromBody] EmployeeResponseDto? employeeResponseDto)
     {
-        if (employee is null)
+        if (employeeResponseDto is null)
         {
-            return BadRequest("Employee is null.");
+            Logger.Warn("EmployeeResponseDto is null!");
+            return BadRequest("Request is null.");
         }
-        _employeesList.Add(employee);
-        if (_employeesList.Count != 10)
+        Logger.Info($"HandleEmployeeRequest: Employee: [ID].{ employeeResponseDto.EmployeeId } - [R].{ employeeResponseDto.Role }.");
+        EmployeeResponses.Add(employeeResponseDto);
+        if (EmployeeResponses.Count == 10)
         {
-            managerService.AddAndSplitEmployees(_employeesList);
-            backgroundTaskQueue.EnqueueAsync(new("Build teams: [Assignee].ManagerService"));
+            managerService.SplitResponses(EmployeeResponses);
+            backgroundTaskQueue.EnqueueAsync(new("Build teams: [Assignee].ManagerService."));
+            EmployeeResponses.Clear();
         }
-        return Ok($"Got it: [E].{employee.EmployeeId} - [ROLE].{employee.Role}.");
+        return Ok($"Got it.");
     }
-    
 }

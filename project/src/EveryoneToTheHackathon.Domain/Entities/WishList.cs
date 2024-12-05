@@ -2,7 +2,6 @@ namespace EveryoneToTheHackathon.Domain.Entities;
 
 public class WishList
 {
-    
     public Guid WishListId { get; init; } = Guid.NewGuid();
     
     public int PreferenceValue { get; init; }
@@ -28,5 +27,4 @@ public class WishList
             PreferredEmployeeRole = preferredEmployee.Role,
         };
     }
-    
 }

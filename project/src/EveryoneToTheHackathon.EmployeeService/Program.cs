@@ -1,4 +1,5 @@
 ﻿using EveryoneToTheHackathon.Domain.Contexts;
+using EveryoneToTheHackathon.Domain.Repositories;
 using EveryoneToTheHackathon.Infrastructure.BackgroundServices;
 using EveryoneToTheHackathon.Infrastructure.BackgroundServices.TaskQueues;
 using EveryoneToTheHackathon.Infrastructure.ServiceOptions;
@@ -21,6 +22,7 @@ builder.Services.AddHttpClient();
 builder.Services.AddControllers();
 builder.Services.AddSingleton<IBackgroundTaskQueue<BaseTaskModel>, BackgroundTaskQueue<BaseTaskModel>>();
 builder.Services.AddSingleton<IEmployeeService, EmployeeService>();
+builder.Services.AddSingleton<IEmployeeRepository, EmployeeRepository>();
 
 builder.Services.AddDbContext<HackathonContext>(o =>
 {
@@ -28,6 +30,9 @@ builder.Services.AddDbContext<HackathonContext>(o =>
 });
 
 var app = builder.Build();
+app.MapControllers();
+
+Environment.SetEnvironmentVariable("AppId", Guid.NewGuid().ToString());
 
 var logRepository = (Hierarchy)LogManager.GetRepository();
 XmlConfigurator.Configure(logRepository, new FileInfo(options.Value.Logging!.ConfigFileName));

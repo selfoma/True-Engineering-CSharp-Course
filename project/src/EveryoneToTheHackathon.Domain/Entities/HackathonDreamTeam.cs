@@ -2,7 +2,6 @@ namespace EveryoneToTheHackathon.Domain.Entities;
 
 public class HackathonDreamTeam
 {
-    
     public int JuniorId { get; init; }
     public EmployeeRole JuniorRole { get; private init; } = EmployeeRole.Junior;
     public Employee? Junior { get; set; }
@@ -12,11 +11,10 @@ public class HackathonDreamTeam
     public Employee? TeamLead { get; set; }
     
     public Guid HackathonId { get; init; } = Guid.Empty;
-    public Hackathon? Hackathon { get; init; }
+    public Hackathon? Hackathon { get; set; }
 
     public override string ToString()
     {
         return $"{ Junior?.FullName } - { TeamLead?.FullName }";
     }
-    
 }

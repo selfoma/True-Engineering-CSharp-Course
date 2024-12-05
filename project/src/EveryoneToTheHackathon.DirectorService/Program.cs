@@ -5,7 +5,6 @@ using EveryoneToTheHackathon.Infrastructure.BackgroundServices.TaskQueues;
 using EveryoneToTheHackathon.Infrastructure.BackgroundServices.TaskQueues.Models;
 using EveryoneToTheHackathon.Infrastructure.ServiceOptions;
 using EveryoneToTheHackathon.Infrastructure.Services;
-using EveryoneToTheHackathon.Infrastructure.TaskQueues.Models;
 using log4net;
 using log4net.Config;
 using log4net.Repository.Hierarchy;
@@ -37,6 +36,8 @@ using var scope = app.Services.CreateScope();
     var context = scope.ServiceProvider.GetRequiredService<HackathonContext>();
     context.Database.Migrate();
 }
+
+app.MapControllers();
 
 var logRepository = (Hierarchy)LogManager.GetRepository();
 XmlConfigurator.Configure(logRepository, new FileInfo(options.Value.Logging!.ConfigFileName));

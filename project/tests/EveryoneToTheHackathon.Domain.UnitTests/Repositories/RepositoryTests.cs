@@ -192,7 +192,7 @@ public class RepositoryTests
 
             // Employees cascade adding mappings and wishlists
             var employees = juniors.Union(teamLeads).ToList();
-            employeeRepository.AddRange(employees);
+            employees.ForEach(employeeRepository.Add);
             var employeeIntersection = employees
                 .ToList().Intersect(context.Employees.ToList(), new EmployeeComparer());
             Assert.Equal(employees.Count, employeeIntersection.Count());

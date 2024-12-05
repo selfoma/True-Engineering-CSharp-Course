@@ -10,7 +10,6 @@ public interface IBackgroundTaskQueue<T>
 
 public class BackgroundTaskQueue<T> : IBackgroundTaskQueue<T>
 {
-    
     private readonly Channel<T> _queue = Channel.CreateUnbounded<T>();
     
     public async Task EnqueueAsync(T task)
@@ -22,5 +21,4 @@ public class BackgroundTaskQueue<T> : IBackgroundTaskQueue<T>
     {
         return await _queue.Reader.ReadAsync(cancellationToken);
     }
-    
 }

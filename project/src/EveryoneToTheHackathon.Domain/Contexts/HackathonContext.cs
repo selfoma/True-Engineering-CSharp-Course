@@ -21,16 +21,4 @@ public class HackathonContext(DbContextOptions<HackathonContext> options) : DbCo
         modelBuilder.ApplyConfiguration(new WishListConfiguration());
         modelBuilder.ApplyConfiguration(new HackathonDreamTeamConfiguration());
     }
-    
 }
-
-// public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<HackathonContext>
-// {
-//     public HackathonContext CreateDbContext(string[] args)
-//     {
-//         var optionsBuilder = new DbContextOptionsBuilder<HackathonContext>();
-//         optionsBuilder.UseSqlServer("Server=sql-hackathon-server,1433;Database=EveryoneToTheHackathon;User=SA;Password=foolMe_aaaa123;TrustServerCertificate=True");
-//
-//         return new HackathonContext(optionsBuilder.Options);
-//     }
-// }

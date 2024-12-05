@@ -8,17 +8,13 @@ namespace EveryoneToTheHackathon.Infrastructure.Services;
 
 public interface IEmployeeService
 {
-    List<Employee> Colleagues { get; }
-    
     Employee? GetThisEmployee();
-    
     void HandleParticipantsList(Guid hackathonId);
     void PrepareWishLists();
 }
 
 public class EmployeeService : IEmployeeService
 {
-    
     private static readonly ILog Logger = LogManager.GetLogger(typeof(EmployeeService));
 
     private readonly IEmployeeRepository _repository;
@@ -104,6 +100,7 @@ public class EmployeeService : IEmployeeService
     private void SaveEmployee()
     {
         _repository.Add(_currentEmployee);
+        Logger.Info("SaveEmployee: Saved!");
     }
     
     public static class CsvParticipantsReader
@@ -146,7 +143,7 @@ public class EmployeeService : IEmployeeService
             }
             catch (Exception e)
             {
-                Log.Fatal($"CsvReader[ReadParticipants]: File path: { filePath }.");
+                Log.Fatal($"ReadParticipants: [PATH].{ filePath }.");
                 Log.Fatal("Exception: ", e);
                 Environment.Exit(10);
             }
@@ -177,14 +174,14 @@ public class EmployeeService : IEmployeeService
                             };
                         }
                     }
-                    Log.Fatal($"CsvReader:[ReadParticipant] File path: { filePath }.");
+                    Log.Fatal($"ReadParticipant: [PATH].{ filePath }.");
                     Log.Fatal($"Employee: [ID].{ employeeId } - [ROLE].{ role } not found.");
                     Environment.Exit(10);
                 }
             }
             catch (Exception e)
             {
-                Log.Fatal($"CsvReader:[ReadParticipant] File path: { filePath }.");
+                Log.Fatal($"ReadParticipant: [PATH].{ filePath }.");
                 Log.Fatal("Exception: ", e);
                 Environment.Exit(10);
             }
@@ -192,5 +189,4 @@ public class EmployeeService : IEmployeeService
         }
         
     }
-    
 }

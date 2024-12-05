@@ -15,27 +15,41 @@ public class ManagerHostedService(
     IHttpClientFactory httpClientFactory,
     IManagerService managerService) : BackgroundService
 {
-    
     private static readonly ILog Logger = LogManager.GetLogger(typeof(ManagerHostedService));
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        await backgroundTaskQueue.DequeueAsync(stoppingToken);
-        var dreamTeams = managerService.ManageTeams();
-        var response = await httpClientFactory
-            .CreateClient()
-            .PostAsJsonAsync(
-                options.Value.Services!.BaseUrlOptions!.DirectorUrl + "api/teams", 
-                dreamTeams, 
-                stoppingToken
-            );
-        if (!response.IsSuccessStatusCode)
+        while (!stoppingToken.IsCancellationRequested)
         {
-            Logger.Fatal("ExecuteAsync: Got bad response.");
-            Logger.Fatal($"Response: { await response.Content.ReadAsStringAsync(stoppingToken) }");
-            Environment.Exit(15);
+            try
+            {
+                await backgroundTaskQueue.DequeueAsync(stoppingToken);
+                var dreamTeams = managerService.ManageTeams();
+                var response = await httpClientFactory
+                    .CreateClient()
+                    .PostAsJsonAsync(
+                        options.Value.Services!.BaseUrl!.DirectorUrl + "/api/teams",
+                        new { DreamTeamDtos = dreamTeams },
+                        stoppingToken
+                    );
+                if (!response.IsSuccessStatusCode)
+                {
+                    Logger.Fatal("ExecuteAsync: Got bad response.");
+                    Logger.Fatal($"Response: {await response.Content.ReadAsStringAsync(stoppingToken)}");
+                    Environment.Exit(15);
+                }
+                else
+                {
+                    Logger.Info("ExecuteAsync: Teams successfully posted.");
+                }
+                await Task.CompletedTask;
+            }
+            catch (Exception e)
+            {
+                Logger.Fatal("ExecuteAsync: Exception thrown");
+                Logger.Fatal("Exception:", e);
+                Environment.Exit(15);
+            }
         }
-        await Task.CompletedTask;
     }
-    
 }

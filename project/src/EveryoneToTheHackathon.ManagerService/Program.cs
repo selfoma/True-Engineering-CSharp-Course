@@ -23,8 +23,9 @@ builder.Services.AddSingleton<IManagerService, ManagerService>();
 builder.Services.AddSingleton<ITeamBuildingStrategy, ManagerTeamBuildingStrategy>();
 
 var app = builder.Build();
+app.MapControllers();
 
-var logRepository = (Hierarchy)LogManager.GetRepository();
+var logRepository = (Hierarchy) LogManager.GetRepository();
 XmlConfigurator.Configure(logRepository, new FileInfo(options.Value.Logging!.ConfigFileName));
 
 app.Run();

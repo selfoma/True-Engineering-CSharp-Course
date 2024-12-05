@@ -14,7 +14,6 @@ public interface IEmployeeRepository
 
 public class EmployeeRepository(HackathonContext context) : IEmployeeRepository
 {
-    
     private static readonly ILog Logger = LogManager.GetLogger(typeof(EmployeeRepository));
     private static readonly EmployeeComparer Comparer = new();
 
@@ -40,5 +39,4 @@ public class EmployeeRepository(HackathonContext context) : IEmployeeRepository
             Environment.Exit(40);
         }
     }
-    
 }
