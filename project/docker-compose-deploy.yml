@@ -1,5 +1,17 @@
 ﻿services:
   
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    hostname: rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: [ "CMD", "rabbitmqctl", "status" ]
+      interval: 5s
+      retries: 10
+  
   sql-hackathon-server:
     container_name: sql-server
     image: mcr.microsoft.com/mssql/server:latest
@@ -14,10 +26,14 @@
     image: manager-service
     volumes:
       - ./logs:/binaries/logs
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
     ports:
       - "9000:8080"
   
   teamlead-1:
+    container_name: teamlead-1
     image: employee-service
     environment:
       - role=TeamLead
@@ -25,12 +41,15 @@
     ports: 
       - "9001:8080"
     depends_on:
-      - manager
-      - sql-hackathon-server
+      manager:
+        condition: service_started
+      sql-hackathon-server:
+        condition: service_started
     volumes:
       - ./logs:/binaries/logs
     
   teamlead-2:
+    container_name: teamlead-2
     image: employee-service
     environment:
       - role=TeamLead
@@ -38,8 +57,10 @@
     ports:
       - "9002:8080"
     depends_on:
-      - manager
-      - sql-hackathon-server
+      manager:
+        condition: service_started
+      sql-hackathon-server:
+        condition: service_started
     volumes:
       - ./logs:/binaries/logs
       
@@ -52,8 +73,10 @@
     ports:
       - "9003:8080"
     depends_on:
-      - manager
-      - sql-hackathon-server
+      manager:
+        condition: service_started
+      sql-hackathon-server:
+        condition: service_started
     volumes:
       - ./logs:/binaries/logs
     
@@ -66,8 +89,10 @@
     ports:
       - "9004:8080"
     depends_on:
-      - manager
-      - sql-hackathon-server
+      manager:
+        condition: service_started
+      sql-hackathon-server:
+        condition: service_started
     volumes:
       - ./logs:/binaries/logs
     
@@ -80,8 +105,10 @@
     ports:
       - "9005:8080"
     depends_on:
-      - manager
-      - sql-hackathon-server
+      manager:
+        condition: service_started
+      sql-hackathon-server:
+        condition: service_started
     volumes:
       - ./logs:/binaries/logs
     
@@ -94,8 +121,10 @@
     ports:
       - "9011:8080"
     depends_on:
-      - manager
-      - sql-hackathon-server
+      manager:
+        condition: service_started
+      sql-hackathon-server:
+        condition: service_started
     volumes:
       - ./logs:/binaries/logs
     
@@ -108,8 +137,10 @@
     ports:
       - "9012:8080"
     depends_on:
-      - manager
-      - sql-hackathon-server
+      manager:
+        condition: service_started
+      sql-hackathon-server:
+        condition: service_started
     volumes:
       - ./logs:/binaries/logs
 
@@ -122,8 +153,10 @@
     ports:
       - "9013:8080"
     depends_on:
-      - manager
-      - sql-hackathon-server
+      manager:
+        condition: service_started
+      sql-hackathon-server:
+        condition: service_started
     volumes:
       - ./logs:/binaries/logs
 
@@ -136,8 +169,10 @@
     ports:
       - "9014:8080"
     depends_on:
-      - manager
-      - sql-hackathon-server
+      manager:
+        condition: service_started
+      sql-hackathon-server:
+        condition: service_started
     volumes:
       - ./logs:/binaries/logs
 
@@ -150,8 +185,10 @@
     ports:
       - "9015:8080"
     depends_on:
-      - manager
-      - sql-hackathon-server
+      manager:
+        condition: service_started
+      sql-hackathon-server:
+        condition: service_started
     volumes:
       - ./logs:/binaries/logs
 
@@ -163,14 +200,24 @@
     ports:
       - "9020:8080"
     depends_on:
-      - teamlead-1
-      - teamlead-2
-      - teamlead-3
-      - teamlead-4
-      - teamlead-5
-      - junior-1
-      - junior-2
-      - junior-3
-      - junior-4
-      - junior-5
+      teamlead-1:
+        condition: service_started
+      teamlead-2:
+        condition: service_started
+      teamlead-3:
+        condition: service_started
+      teamlead-4:
+        condition: service_started
+      teamlead-5:
+        condition: service_started
+      junior-1:
+        condition: service_started
+      junior-2:
+        condition: service_started
+      junior-3:
+        condition: service_started
+      junior-4:
+        condition: service_started
+      junior-5:
+        condition: service_started
     

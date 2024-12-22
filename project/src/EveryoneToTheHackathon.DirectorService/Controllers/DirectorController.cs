@@ -3,6 +3,7 @@ using EveryoneToTheHackathon.Infrastructure.BackgroundServices.TaskQueues.Models
 using EveryoneToTheHackathon.Infrastructure.Dtos;
 using EveryoneToTheHackathon.Infrastructure.Services;
 using log4net;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EveryoneToTheHackathon.DirectorService.Controllers;
@@ -23,8 +24,9 @@ public class DirectorController(
             Logger.Warn("ManagerResponseDto is null!");
             return BadRequest("Request is null!");
         }
-        Logger.Info($"HandleManagerRequestContainingDreamTeams: Received { managerResponseDto.DreamTeamDtos.Count } dream teams.");
-        directorService.FinishHackathon(managerResponseDto.DreamTeamDtos);
+        Logger.Info(
+            $"HandleManagerRequestContainingDreamTeams: Received {managerResponseDto.DreamTeamDtos.Count} dream teams.");
+        directorService.HandleDreamTeams(managerResponseDto.DreamTeamDtos);
         backgroundTaskQueue.EnqueueAsync(new("Show hackathon result: [Assignee].DirectorService."));
         return Ok("Got it.");
     }

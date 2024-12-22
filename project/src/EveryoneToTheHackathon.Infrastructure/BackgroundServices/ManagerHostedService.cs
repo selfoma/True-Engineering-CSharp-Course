@@ -19,10 +19,12 @@ public class ManagerHostedService(
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        int hackathonCounts = 0;
         while (!stoppingToken.IsCancellationRequested)
         {
             try
             {
+                Logger.Info($"Hackathon managed: { hackathonCounts }");
                 await backgroundTaskQueue.DequeueAsync(stoppingToken);
                 var dreamTeams = managerService.ManageTeams();
                 var response = await httpClientFactory
@@ -42,6 +44,7 @@ public class ManagerHostedService(
                 {
                     Logger.Info("ExecuteAsync: Teams successfully posted.");
                 }
+                hackathonCounts++;
                 await Task.CompletedTask;
             }
             catch (Exception e)

@@ -9,7 +9,7 @@ namespace EveryoneToTheHackathon.Infrastructure.Services;
 public interface IHackathonService
 {
     Hackathon StartHackathon();
-    void ComputeHarmonicAndFinish(List<DreamTeamDto> dreamTeamDtos);
+    Task ComputeHarmonicAndFinish(List<DreamTeamDto> dreamTeamDtos);
     
     Hackathon GetHackathonById(Guid hackathonId);
     decimal GetAverageResult();
@@ -33,13 +33,14 @@ public class HackathonService(IHackathonRepository repository) : IHackathonServi
         return _hackathon;
     }
 
-    public void ComputeHarmonicAndFinish(List<DreamTeamDto> dreamTeamDtos)
+    public async Task ComputeHarmonicAndFinish(List<DreamTeamDto> dreamTeamDtos)
     {
-        var harmonic = ComputeHarmonicMean(dreamTeamDtos);
+        var harmonic = await ComputeHarmonicMean(dreamTeamDtos);
         Logger.Info($"Harmonic mean: { harmonic }");
         repository.UpdateHarmonicById(_hackathon!.HackathonId, harmonic);
-        var dreamTeams = dreamTeamDtos.Select(dto => DreamTeamDto.FromDto(dto)).ToList();
+        var dreamTeams = dreamTeamDtos.Select(DreamTeamDto.FromDto).ToList();
         repository.UpdateHackathonDreamTeams(_hackathon.HackathonId, dreamTeams);
+        await Task.CompletedTask;
     }
     
     public decimal GetAverageResult()
@@ -86,7 +87,7 @@ public class HackathonService(IHackathonRepository repository) : IHackathonServi
         return repository.GetHackathonById(hackathonId);
     }
     
-    private decimal ComputeHarmonicMean(List<DreamTeamDto> dreamTeamDtos)
+    private async Task<decimal> ComputeHarmonicMean(List<DreamTeamDto> dreamTeamDtos)
     {
         var harmonics = new List<int>(dreamTeamDtos.Count * 2);
         dreamTeamDtos.ForEach(dto =>
@@ -96,7 +97,7 @@ public class HackathonService(IHackathonRepository repository) : IHackathonServi
             harmonics.Add(juniorPreference);
             harmonics.Add(teamLeadPreference);
         });
-        return ApplyFormula(harmonics);
+        return await Task.Run(() => ApplyFormula(harmonics));
     }
 
     private int FindPreference(List<WishListDto> employeeWishLists, int preferredEmployeId)

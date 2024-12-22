@@ -20,4 +20,9 @@
       <ProjectReference Include="..\EveryoneToTheHackathon.Infrastructure\EveryoneToTheHackathon.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="MassTransit" Version="8.3.5-develop.2161" />
+      <PackageReference Include="MassTransit.RabbitMQ" Version="8.3.5-develop.2161" />
+    </ItemGroup>
+
 </Project>

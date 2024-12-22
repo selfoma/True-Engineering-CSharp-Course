@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using EveryoneToTheHackathon.Domain.Entities;
 using EveryoneToTheHackathon.Infrastructure.Dtos;
 using EveryoneToTheHackathon.Infrastructure.Strategies;
