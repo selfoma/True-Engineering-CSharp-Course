@@ -1,0 +1,71 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FEA370BB-D973-4244-AA05-9D6217F3AB34}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose-deploy.yml = docker-compose-deploy.yml
+		docker-compose-build.yml = docker-compose-build.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{9E9D312C-2A62-49DF-8A2B-8B2389F6B21C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{482B8B03-1312-4E8D-AA91-EDE66146F089}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EveryoneToTheHackathon.Infrastructure.UnitTests", "tests\EveryoneToTheHackathon.Infrastructure.UnitTests\EveryoneToTheHackathon.Infrastructure.UnitTests.csproj", "{F552F9A1-5020-476E-9751-9976043ECCE6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EveryoneToTheHackathon.Domain", "src\EveryoneToTheHackathon.Domain\EveryoneToTheHackathon.Domain.csproj", "{8AF82EF4-783F-430E-B2F6-60D956B41C48}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EveryoneToTheHackathon.Infrastructure", "src\EveryoneToTheHackathon.Infrastructure\EveryoneToTheHackathon.Infrastructure.csproj", "{A56A9A77-5DAA-4913-99B9-9AD4898B7CB5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EveryoneToTheHackathon.Domain.UnitTests", "tests\EveryoneToTheHackathon.Domain.UnitTests\EveryoneToTheHackathon.Domain.UnitTests.csproj", "{6309470A-F1F5-44D2-8E3A-051B6BE4D965}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EveryoneToTheHackathon.ManagerService", "src\EveryoneToTheHackathon.ManagerService\EveryoneToTheHackathon.ManagerService.csproj", "{A69748FB-9266-4491-BF18-F497EAD720BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EveryoneToTheHackathon.DirectorService", "src\EveryoneToTheHackathon.DirectorService\EveryoneToTheHackathon.DirectorService.csproj", "{082BA768-EB59-45C4-AD6E-2965427C64CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EveryoneToTheHackathon.EmployeeService", "src\EveryoneToTheHackathon.EmployeeService\EveryoneToTheHackathon.EmployeeService.csproj", "{EB03F236-0E5B-42CF-9776-503258E2717B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F552F9A1-5020-476E-9751-9976043ECCE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F552F9A1-5020-476E-9751-9976043ECCE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F552F9A1-5020-476E-9751-9976043ECCE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F552F9A1-5020-476E-9751-9976043ECCE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8AF82EF4-783F-430E-B2F6-60D956B41C48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AF82EF4-783F-430E-B2F6-60D956B41C48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AF82EF4-783F-430E-B2F6-60D956B41C48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AF82EF4-783F-430E-B2F6-60D956B41C48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A56A9A77-5DAA-4913-99B9-9AD4898B7CB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A56A9A77-5DAA-4913-99B9-9AD4898B7CB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A56A9A77-5DAA-4913-99B9-9AD4898B7CB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A56A9A77-5DAA-4913-99B9-9AD4898B7CB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6309470A-F1F5-44D2-8E3A-051B6BE4D965}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6309470A-F1F5-44D2-8E3A-051B6BE4D965}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6309470A-F1F5-44D2-8E3A-051B6BE4D965}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6309470A-F1F5-44D2-8E3A-051B6BE4D965}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A69748FB-9266-4491-BF18-F497EAD720BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A69748FB-9266-4491-BF18-F497EAD720BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A69748FB-9266-4491-BF18-F497EAD720BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A69748FB-9266-4491-BF18-F497EAD720BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{082BA768-EB59-45C4-AD6E-2965427C64CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{082BA768-EB59-45C4-AD6E-2965427C64CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{082BA768-EB59-45C4-AD6E-2965427C64CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{082BA768-EB59-45C4-AD6E-2965427C64CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB03F236-0E5B-42CF-9776-503258E2717B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB03F236-0E5B-42CF-9776-503258E2717B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB03F236-0E5B-42CF-9776-503258E2717B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB03F236-0E5B-42CF-9776-503258E2717B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F552F9A1-5020-476E-9751-9976043ECCE6} = {9E9D312C-2A62-49DF-8A2B-8B2389F6B21C}
+		{8AF82EF4-783F-430E-B2F6-60D956B41C48} = {482B8B03-1312-4E8D-AA91-EDE66146F089}
+		{A56A9A77-5DAA-4913-99B9-9AD4898B7CB5} = {482B8B03-1312-4E8D-AA91-EDE66146F089}
+		{6309470A-F1F5-44D2-8E3A-051B6BE4D965} = {9E9D312C-2A62-49DF-8A2B-8B2389F6B21C}
+		{A69748FB-9266-4491-BF18-F497EAD720BF} = {482B8B03-1312-4E8D-AA91-EDE66146F089}
+		{082BA768-EB59-45C4-AD6E-2965427C64CC} = {482B8B03-1312-4E8D-AA91-EDE66146F089}
+		{EB03F236-0E5B-42CF-9776-503258E2717B} = {482B8B03-1312-4E8D-AA91-EDE66146F089}
+	EndGlobalSection
+EndGlobal

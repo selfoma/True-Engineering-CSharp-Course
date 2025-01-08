@@ -1,0 +1,23 @@
+﻿services:
+  
+  manager-service-builder:
+    build:
+      context: .
+      dockerfile: src/EveryoneToTheHackathon.ManagerService/Dockerfile
+    image: manager-service
+    restart: "no"
+  
+  employee-service-builder:
+    build:
+      context: .
+      dockerfile: src/EveryoneToTheHackathon.EmployeeService/Dockerfile
+    image: employee-service
+    restart: "no"
+
+  director-service-builder:
+    build:
+      context: .
+      dockerfile: src/EveryoneToTheHackathon.DirectorService/Dockerfile
+    image: director-service
+    restart: "no"
+    
