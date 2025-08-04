@@ -1,107 +1,137 @@
-# Все на хакатон
-Проект в рамках спецкурса от [True Engineering](https://www.trueengineering.ru/) на языке C#
+# Everyone to the Hackathon
 
-## Описание
-В одной IT компании захотели сформировать команды мечты (DreamTeam). Для этого начинающий HR менеджер (HRManager) предложил умудрённому опытом HR директору (HRDirector) провести хакатон (Hackathon). 
+Project for a special course by [True Engineering](https://www.trueengineering.ru/), written in C#.
 
-На хакатон позвали 20 джунов (Junior) и 20 тимлидов (TeamLead). Разработчикам предложили поработать вместе и к концу мероприятия составить списки коллег (Wishlist), с которыми они хотели бы работать в одной команде. Каждый джун составляет список из 20 тимлидов, ставя на первое место наиболее предпочтительного кандидата, на второе следующего по предпочтительности и далее по убывающей. Тимлиды, в свою очередь, таким же образом оценивают джунов. Все списки должны состоять из 20 пунктов, пункты не должны повторяться. В списках тимлидов могут быть только джуны, в списках джунов только тимлиды. 
+## Description
 
-Все эти списки передаются нашему начинающему HR менеджеру, который уже пообещал придумать инновационную стратегию формирования команд мечты. Каждая команда должна состоять из пары: Тимлид + Джун. Список команд он передаст HR директору. 
+An IT company decided to form their dream teams (DreamTeam). To achieve this, a junior HR manager (HRManager) proposed to the experienced HR director (HRDirector) to organize a hackathon (Hackathon).
 
-Все было бы просто, но умудрённый опытом HR директор придумал как математически точно оценить гармоничность команд. Для этого он предложил посчитать индекс удовлетворённости каждого из разработчиков. Например, если тимлиду попался наиболее желаемый джун, то он получает 20 очков удовлетворённости, если второй по списку, то 19 и т.д. вплоть до 1. Точно так же рассчитывается индекс удовлетворённости джунов их тимлидами. 
+20 juniors (Junior) and 20 team leads (TeamLead) are invited to the hackathon. Developers are asked to collaborate and by the end of the event submit a list of colleagues (Wishlist) they would like to work with in a team. Each junior ranks all 20 team leads in order of preference (most preferred first). Team leads do the same for the juniors. All lists must contain 20 unique entries — juniors rank team leads, and team leads rank juniors.
 
-Далее HR директор подсчитывает среднее гармоническое индексов удовлетворённости всех участников. Именно это число HR директор предложил считать гармоничностью распределения. Основная цель начинающего HR менеджера при выборе стратегии распределение по командам – чтобы гармоничность мероприятия была как можно выше. 
+These lists are passed to the junior HR manager, who promised to come up with an innovative strategy to form the dream teams. Each team must consist of one TeamLead + one Junior. The HRManager will send the final team list to the HRDirector.
 
-Хакатон проводится несколько раз. Необходимо вычислить среднюю гармоничность как среднее арифметическое по всем мероприятиям, т.е.  вычислить среднее арифметическое средних гармонических. 
+All would be simple, but the experienced HRDirector proposed a mathematical way to evaluate the "harmony" of the formed teams. Each developer gets a satisfaction score based on the position of their partner in their wishlist. For example, if a team lead is paired with their top-choice junior, they get 20 satisfaction points; second choice – 19, and so on down to 1. Juniors are scored the same way.
 
-## Задача 1: ООП
+Then, the HRDirector calculates the **harmonic mean** of all participants’ satisfaction scores. This value represents the harmony of the event. The HRManager’s main objective is to maximize this harmony when forming the teams.
 
-Реализовать консольное приложение, списки предпочтений определяются случайно. Списки участников необходимо считывать из файлов (Juniors20.csv и Teamleads20.csv), файлы взять из [репозитория](https://github.com/georgiy-sidorov/CSHARP_2024_NSU/tree/main) 
+The hackathon is held multiple times. The final result is the **average of all harmonic means** across all events.
 
-Хакатон проводится 1000 раз. Приложение должно вывести в консоль уровень гармоничности по всем 1000 мероприятиям, а также среднее по всем. 
+---
 
-Само приложение не должно скачивать файлы с github во время работы, нужно скачать их и разместить рядом с исходным кодом решения. 
+## Task 1: OOP
 
-## Задача 2: .Net Generic Host 
+Implement a console application. Preference lists should be generated randomly. Participant lists are read from files: `Juniors20.csv` and `Teamleads20.csv` (available in [this repository](https://github.com/georgiy-sidorov/CSHARP_2024_NSU/tree/main)).
 
-Поместить песочницу в .Net Generic Host. Выделить в отдельные зависимости: 
-- Класс, реализующий проведение одного хакатона; 
-- Класс, реализующий HRManager; 
-- Класс, реализующий HRDirector; 
-- Стратегию HRManager.
+The hackathon should be held 1000 times. The app must print the harmony score for each event and the overall average.
 
-## Задача 3: Тестирование 
+> The application should not download files from GitHub during execution. Download them in advance and place them next to your source code.
 
-Реализовать следующие unit-тесты: 
-- Генерация Wishlist:
-    - Размер списка должен совпадать с количеством тимлидов/джунов; 
-    - Заранее определённый сотрудник должен присутствовать списке.
-      
-- HRManager: 
-    - Количество команд должно совпадать с заранее заданным; 
-    - Стратегия HRManager-a – на заранее определённых предпочтениях, должна возвращать заранее определённое распределение; 
-    - Стратегия HRManager-а должна быть вызвана ровно один раз.
-      
-- HRDirector: 
-    - Проверка алгоритма вычисления среднего гармонического. Например, среднее гармоническое одинаковых чисел равно им всем; 
-    - Вычисление среднего гармонического, конкретные примеры. Например, 2 и 6 должны дать 3; 
-    - Заранее определённые списки предпочтений и команды, должны дать, заранее определённое значение.
-      
-- Проведение хакатона: 
-    - Хакатон, в котором заранее определены участники и списки предпочтений, должен дать определённый уровень гармоничности.
+---
 
-## Задача 4: Базы данных 
+## Task 2: .NET Generic Host
 
-Подключить проект к БД. Можно использовать любую СУБД.
- - Каждый хакатон должен иметь уникальный идентификатор; 
- - Хакатоны, их участники, списки предпочтений, сформированные команды и рассчитанные результаты должны сохраняться в БД. 
+Refactor the app to use the .NET Generic Host. Separate responsibilities into the following components:
 
-Приложение должно поддерживать следующее:
-- Провести один хакатон со случайными предпочтениями, сохранить условия и рассчитанную гармоничность в БД; 
-- Распечатать список участников, сформированные команды и рассчитанную гармоничность в консоли по идентификатору хакатона; 
-- Посчитать и распечатать среднюю гармоничность во всем хакатонам в БД.
+* A class for conducting a single hackathon;
+* A class implementing the HRManager;
+* A class implementing the HRDirector;
+* The strategy used by the HRManager.
 
-Написать дополнительные тесты, заменив вашу СУБД на SQLite InMemory. Покрыть тестами следующий функционал:
-- Запись информации о мероприятии в БД; 
-- Чтение информации о мероприятии из БД; 
-- Расчёт среднего и запись среднего гармонического. 
+---
 
-## Задача 5: Web службы 
+## Task 3: Testing
 
-Теперь у нас 5 джунов и 5 тимлидов (файлы Juniors5.csv и Teamleads5.csv). Формула расчёта индекса удовлетворённости меняется соответственно (5 за наиболее предпочтительного напарника 4 за следующего и т.д.) 
+Implement the following unit tests:
 
-Списки [тут](https://github.com/georgiy-sidorov/CSHARP_2024_NSU/tree/main)
+* **Wishlist Generation**:
 
-Реализовать в виде отдельных экземпляров приложения в Docker контейнерах: 
-- Каждого тимлида; 
-- Каждого джуна; 
-- HR-менеджера; 
-- HR-директора. 
+  * The list length must match the number of team leads/juniors;
+  * A predetermined participant must be present in the list.
 
-Разработчики отправляют свои запросы по HTTP, HR-менеджеру, который определяет распределение. 
+* **HRManager**:
 
-HR-менеджер отправляет HR-директору по HTTP все предпочтения всех участников, и итоговое распределение. 
+  * The number of teams must match the expected count;
+  * Given a fixed set of preferences, the strategy must produce a predetermined team distribution;
+  * The strategy must be invoked exactly once.
 
-HR-директор считает гармоничность, выводит её в консоль и сохраняет в БД (как в предыдущей задаче). 
+* **HRDirector**:
 
-Хакатон проводится 1 раз. 
+  * Test harmonic mean calculation: e.g., identical values should return that same value;
+  * Test harmonic mean for specific examples: e.g., 2 and 6 should yield 3;
+  * Given known preferences and team assignments, the harmony score should match expected output.
 
-Оформить всё едином docker-compose.yml файлом и запускать одной командой.  
-      
-## Задача 6: MassTansit и RabbitMQ 
+* **Hackathon Execution**:
 
-HR-директор объявляет о начале мероприятия отправляя специальное сообщение по RabbitMQ (в нем может быть указан идентификатор начинающегося хакатона). Джуны и тимлиды публикуют свои предпочтения по RabbitMQ. 
+  * A hackathon with fixed participants and preferences should yield a known harmony score.
 
-HR-менеджер, получив предпочтения от джунов и тимлидов, формирует команды и отправляет их по HTTP HR-директору.  
+---
 
-HR-директор, во-первых, по HTTP получает команды от HR-менеджера, во-вторых, получает по RabbitMQ списки предпочтений от участников хакатона. На основе команд он рассчитывает гармоничность. Затем он сохраняет в БД гармоничность и списки предпочтений. 
+## Task 4: Database
 
-Всё должно быть оформлено единым docker-compose.yml файлом, как в предыдущей задаче. 
+Connect the project to a database (any RDBMS is allowed).
 
-Мероприятие проводится 10 раз. 
+* Each hackathon should have a unique identifier;
+* Hackathon details (participants, preferences, teams, harmony score) must be stored in the DB.
 
-Схема взаимодействия 😊:
+The app should support:
+
+* Running one hackathon with random preferences and storing the result in the DB;
+* Displaying participants, team assignments, and harmony score by hackathon ID;
+* Calculating and printing the average harmony score across all hackathons in the DB.
+
+Write additional tests using **SQLite InMemory**. Cover:
+
+* Writing event data to the DB;
+* Reading event data from the DB;
+* Calculating and storing the average harmonic score.
+
+---
+
+## Task 5: Web Services
+
+Now the hackathon has 5 juniors and 5 team leads (`Juniors5.csv` and `Teamleads5.csv`). The satisfaction score formula changes accordingly: 5 points for top choice, 4 for second, ..., down to 1.
+
+Files: [available here](https://github.com/georgiy-sidorov/CSHARP_2024_NSU/tree/main)
+
+Implement the system using separate app instances in Docker containers:
+
+* One for each team lead;
+* One for each junior;
+* One for the HRManager;
+* One for the HRDirector.
+
+Participants send their preferences via **HTTP** to the HRManager, who determines the team assignments.
+
+The HRManager sends all preferences and final teams via **HTTP** to the HRDirector.
+
+The HRDirector calculates harmony, prints it to the console, and stores the result in the DB (as in Task 4).
+
+Only one hackathon is run.
+
+Use a single `docker-compose.yml` file to run the entire system with one command.
+
+---
+
+## Task 6: MassTransit and RabbitMQ
+
+The HRDirector announces the start of the event by sending a special message via **RabbitMQ** (may include the hackathon ID). Juniors and team leads publish their preferences via RabbitMQ.
+
+The HRManager receives preferences, forms the teams, and sends the result via **HTTP** to the HRDirector.
+
+The HRDirector:
+
+* Receives teams via HTTP;
+* Receives preferences via RabbitMQ;
+* Calculates harmony based on the teams;
+* Stores harmony and preference data in the DB.
+
+Everything must be orchestrated via a single `docker-compose.yml` file, just like in the previous task.
+
+The event is held 10 times.
+
+Interaction scheme 😊:
 
 ![image](https://github.com/user-attachments/assets/82e2fa9a-cd31-4d77-8a96-169cb6fee61c)
 
-Важно!!! Все события должны обрабатываться сразу, как только могут быть обработаны, не должно быть никаких ожиданий фиксированных таймаутов времени. т.е. никаких Thread.Sleep(1000); 
+**Important!**
+All events must be processed immediately when possible — no fixed timeouts, no `Thread.Sleep(1000)` or similar.
